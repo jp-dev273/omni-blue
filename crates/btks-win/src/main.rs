@@ -25,6 +25,23 @@ fn main() {
                 println!("Extra record name: {}", value_name);
                 println!("Extra record value: {:?}", adapter_value.1);
             }
+        });
+
+        let adapter_sub_keys = adapter_key.keys().expect("Did not find Bluetooth Sub Keys");
+
+        adapter_sub_keys.for_each(|adapter_sub_key| {
+            println!("BLE Device key: {}", adapter_sub_key);
+
+            let ble_bluetooth_device_key = adapter_key.open(&adapter_sub_key).expect("Did not find BLE device");
+
+            let ble_bluetooth_device_values = ble_bluetooth_device_key.values().expect("Did not find BLE Device Values");
+
+            ble_bluetooth_device_values.for_each(|bluetooth_device_value| {
+                let value_name = bluetooth_device_value.0;
+                println!("BLE field: {}", value_name);
+
+                println!("BLE value: {:?}", bluetooth_device_value.1);
+            })
         })
 
     });
